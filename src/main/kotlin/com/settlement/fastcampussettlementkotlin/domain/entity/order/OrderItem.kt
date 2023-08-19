@@ -17,11 +17,4 @@ data class OrderItem(
         var deletedAt: ZonedDateTime? = null, //삭제시간
         var purchaseConfirmedAt: ZonedDateTime? = null, //구매확정일
         var shippedCompleteAt: ZonedDateTime? = null, //배송완료일
-
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "order_no")
-        var order: Order,
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "order_item_snapshot_no")
-        var orderItemSnapshot: OrderItemSnapshot
 )

@@ -1,6 +1,7 @@
 package com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed
 
 import com.settlement.fastcampussettlementkotlin.domain.entity.order.OrderItem
+import com.settlement.fastcampussettlementkotlin.infrastructure.database.repository.OrderItemRepository
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing
@@ -8,6 +9,8 @@ import org.springframework.batch.core.configuration.annotation.JobScope
 import org.springframework.batch.core.job.builder.JobBuilder
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.core.step.builder.StepBuilder
+import org.springframework.batch.item.data.RepositoryItemReader
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
@@ -22,13 +25,15 @@ import org.springframework.transaction.PlatformTransactionManager
  */
 @Configuration
 @EnableBatchProcessing
-class PurchaseConfirmedJob(
+class PurchaseConfirmedJobConfig(
         private val jobRepository: JobRepository,
         private val transactionManager: PlatformTransactionManager,
-){
+        @Qualifier("deliveryCompletedJpaItemReader") private val deliveryCompletedJpaItemReader: RepositoryItemReader<OrderItem>,
+        private val orderItemRepository: OrderItemRepository,
+) {
+
     val JOB_NAME = "purchaseConfirmedJob"
     val chunkSize = 500
-
 
     @Bean
     fun purchaseConfirmedJob(): Job {
@@ -41,8 +46,19 @@ class PurchaseConfirmedJob(
     @JobScope
     fun purchaseConfirmedJobStep(): Step {
         return StepBuilder(JOB_NAME+"_step", jobRepository)
-                .chunk<String, String>(chunkSize, transactionManager)
+                .chunk<OrderItem, OrderItem>(chunkSize, transactionManager)
+                .reader(deliveryCompletedJpaItemReader)
+                .processor(purchaseConfirmedProcessor())
+                .writer(purchaseConfirmedItemWriter())
                 .build()
     }
 
+    @Bean
+    fun purchaseConfirmedProcessor(): PurchaseConfirmedProcessor {
+        return PurchaseConfirmedProcessor()
+    }
+    @Bean
+    fun purchaseConfirmedItemWriter(): PurchaseConfirmedWriter {
+        return PurchaseConfirmedWriter(orderItemRepository)
+    }
 }

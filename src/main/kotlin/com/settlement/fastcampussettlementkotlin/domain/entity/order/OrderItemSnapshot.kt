@@ -24,11 +24,4 @@ data class OrderItemSnapshot(
         var itemCategory: Int? = 0, //TODO : Enum으로 변경
         var taxRate: Int? = 3,
         var taxType: String = "TAX", //TODO : Enum으로 변경
-
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name="product_no")
-        var product: Product,
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name="seller_no")
-        var seller: Seller,
 )
