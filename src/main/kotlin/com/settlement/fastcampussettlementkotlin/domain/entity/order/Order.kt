@@ -17,4 +17,6 @@ data class Order(
         var paidPgAmount: BigDecimal? = BigDecimal.ZERO,
         var usedMileageAmount: BigDecimal? = BigDecimal.ZERO,
         var couponDiscountAmount: BigDecimal? = BigDecimal.ZERO,
+
+        //주문자 정보는 x
 )

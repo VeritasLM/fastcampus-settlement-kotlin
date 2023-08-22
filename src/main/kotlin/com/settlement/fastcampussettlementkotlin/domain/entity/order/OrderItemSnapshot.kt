@@ -16,6 +16,7 @@ data class OrderItemSnapshot(
 
         var productNo: Long,
         var sellerNo: Long,
+
         var sellPrice: BigDecimal? = BigDecimal.ZERO,
         var supplyPrice: BigDecimal? = BigDecimal.ZERO,
         var promotionAmount: BigDecimal? = BigDecimal.ZERO,

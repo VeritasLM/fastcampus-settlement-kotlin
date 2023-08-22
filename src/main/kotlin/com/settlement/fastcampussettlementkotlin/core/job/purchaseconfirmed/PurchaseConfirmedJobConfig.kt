@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.annotation.EnableTransactionManagement
 
 
 /**
@@ -25,6 +26,7 @@ import org.springframework.transaction.PlatformTransactionManager
  */
 @Configuration
 @EnableBatchProcessing
+@EnableTransactionManagement // 추가 annotation 발생 :) !
 class PurchaseConfirmedJobConfig(
         private val jobRepository: JobRepository,
         private val transactionManager: PlatformTransactionManager,
@@ -48,15 +50,10 @@ class PurchaseConfirmedJobConfig(
         return StepBuilder(JOB_NAME+"_step", jobRepository)
                 .chunk<OrderItem, OrderItem>(chunkSize, transactionManager)
                 .reader(deliveryCompletedJpaItemReader)
-                .processor(purchaseConfirmedProcessor())
                 .writer(purchaseConfirmedItemWriter())
                 .build()
     }
 
-    @Bean
-    fun purchaseConfirmedProcessor(): PurchaseConfirmedProcessor {
-        return PurchaseConfirmedProcessor()
-    }
     @Bean
     fun purchaseConfirmedItemWriter(): PurchaseConfirmedWriter {
         return PurchaseConfirmedWriter(orderItemRepository)

@@ -15,6 +15,7 @@ data class OrderItem(
         var createdAt: ZonedDateTime? = ZonedDateTime.now(), //생성시간
         var updatedAt: ZonedDateTime? = ZonedDateTime.now(), //업데이트시간
         var deletedAt: ZonedDateTime? = null, //삭제시간
+
         var purchaseConfirmedAt: ZonedDateTime? = null, //구매확정일
         var shippedCompleteAt: ZonedDateTime? = null, //배송완료일
 )
