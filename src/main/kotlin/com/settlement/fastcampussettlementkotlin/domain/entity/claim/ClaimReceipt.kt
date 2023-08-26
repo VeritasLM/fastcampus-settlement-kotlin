@@ -8,15 +8,15 @@ import java.time.ZonedDateTime
 @Entity
 data class ClaimReceipt(
     @Id @Column(name = "claim_receipt_no") val id : Long,
-    var orderNo: Long,
+    val orderNo: Long,
 
-    var createdAt: ZonedDateTime? = ZonedDateTime.now(),
-    var updatedAt: ZonedDateTime? = ZonedDateTime.now(),
-    var deletedAt: ZonedDateTime? = null,
-    var completedAt: ZonedDateTime? = null,
+    val createdAt: ZonedDateTime? = ZonedDateTime.now(),
+    val updatedAt: ZonedDateTime? = ZonedDateTime.now(),
+    val deletedAt: ZonedDateTime? = null,
+    val completedAt: ZonedDateTime? = null,
 
-    var requestType: String, //TODO ENUM으로
-    var claimStatus: Int, //TODO ENUM으로
-    var extraFeePayer: Int, //TODO ENUM으로
-    var claimReason: Int, //TODO ENUM으로
+    val requestType: String, //TODO ENUM으로
+    val claimStatus: Int, //TODO ENUM으로
+    val extraFeePayer: Int, //TODO ENUM으로
+    val claimReason: Int, //TODO ENUM으로
 )

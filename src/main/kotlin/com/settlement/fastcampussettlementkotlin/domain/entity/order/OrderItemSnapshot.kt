@@ -7,22 +7,23 @@ import java.math.BigDecimal
 import java.time.ZonedDateTime
 
 @Entity
+@Table(schema = "commerce", name = "Order_item_snapshot")
 data class OrderItemSnapshot(
-        @Id @Column(name = "order_item_snapshot_no") var id: Long,
+        @Id @Column(name = "order_item_snapshot_no") val id: Long,
 
-        var createdAt: ZonedDateTime? = ZonedDateTime.now(),
-        var updatedAt: ZonedDateTime? = ZonedDateTime.now(),
-        var deletedAt: ZonedDateTime? = null,
+        val createdAt: ZonedDateTime? = ZonedDateTime.now(),
+        val updatedAt: ZonedDateTime? = ZonedDateTime.now(),
+        val deletedAt: ZonedDateTime? = null,
 
-        var productNo: Long,
-        var sellerNo: Long,
+        val productNo: Long,
+        val sellerNo: Long,
 
-        var sellPrice: BigDecimal? = BigDecimal.ZERO,
-        var supplyPrice: BigDecimal? = BigDecimal.ZERO,
-        var promotionAmount: BigDecimal? = BigDecimal.ZERO,
-        var defaultDeliveryAmount: BigDecimal? = BigDecimal.valueOf(3000),
+        val sellPrice: BigDecimal? = BigDecimal.ZERO,
+        val supplyPrice: BigDecimal? = BigDecimal.ZERO,
+        val promotionAmount: BigDecimal? = BigDecimal.ZERO,
+        val defaultDeliveryAmount: BigDecimal? = BigDecimal.valueOf(3000),
 
-        var itemCategory: Int? = 0, //TODO : Enum으로 변경
-        var taxRate: Int? = 3,
-        var taxType: String = "TAX", //TODO : Enum으로 변경
+        val itemCategory: Int? = 0, //TODO : Enum으로 변경
+        val taxRate: Int? = 3,
+        val taxType: String = "TAX", //TODO : Enum으로 변경
 )

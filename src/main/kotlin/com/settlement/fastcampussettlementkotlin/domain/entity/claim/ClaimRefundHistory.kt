@@ -10,17 +10,17 @@ import java.time.ZonedDateTime
 data class ClaimRefundHistory(
 
     @Id @Column(name = "claim_refund_no") val id : Long,
-    var claimReceiptNo: Long,
-    var createdAt: ZonedDateTime? = ZonedDateTime.now(),
-    var updatedAt: ZonedDateTime? = ZonedDateTime.now(),
-    var deletedAt: ZonedDateTime? = null,
+    val claimReceiptNo: Long,
+    val createdAt: ZonedDateTime? = ZonedDateTime.now(),
+    val updatedAt: ZonedDateTime? = ZonedDateTime.now(),
+    val deletedAt: ZonedDateTime? = null,
 
-    var refundedAt: ZonedDateTime? = null, //환불시간
+    val refundedAt: ZonedDateTime? = null, //환불시간
 
-    var sellerNo: Long,
-    var refundCashAmount: BigDecimal = BigDecimal.ZERO,
-    var couponSaleAmount: BigDecimal = BigDecimal.ZERO,
-    var refundMileageAmount: BigDecimal = BigDecimal.ZERO,
-    var subtractDeliveryAmount: BigDecimal = BigDecimal.ZERO,
-    var refundDeliveryAmount: BigDecimal = BigDecimal.ZERO,
+    val sellerNo: Long,
+    val refundCashAmount: BigDecimal = BigDecimal.ZERO,
+    val couponSaleAmount: BigDecimal = BigDecimal.ZERO,
+    val refundMileageAmount: BigDecimal = BigDecimal.ZERO,
+    val subtractDeliveryAmount: BigDecimal = BigDecimal.ZERO,
+    val refundDeliveryAmount: BigDecimal = BigDecimal.ZERO,
 )

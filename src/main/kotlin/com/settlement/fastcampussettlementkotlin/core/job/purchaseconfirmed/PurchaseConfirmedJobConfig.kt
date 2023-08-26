@@ -11,6 +11,7 @@ import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.core.step.builder.StepBuilder
 import org.springframework.batch.item.data.RepositoryItemReader
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
  * 대신 JobRepository, transactionManager 명시해서 사용한다.
  * https://github.com/spring-projects/spring-batch/issues/4188
  */
+
 @Configuration
 @EnableBatchProcessing
 @EnableTransactionManagement // 추가 annotation 발생 :) !
