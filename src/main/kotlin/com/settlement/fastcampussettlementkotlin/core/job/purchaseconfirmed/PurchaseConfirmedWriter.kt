@@ -13,14 +13,15 @@ import java.time.ZonedDateTime
 @Transactional
 class PurchaseConfirmedWriter(
         private val orderItemRepository: OrderItemRepository
-): ItemWriter<OrderItem> {
-    override fun write(@NonNull chunk: Chunk<out OrderItem>) {
+): ItemWriter<List<OrderItem>> {
+    override fun write(@NonNull chunk: Chunk<out List<OrderItem>>) {
         println(chunk.items)
         for (item in chunk.items) {
+            println(item)
             //TODO Hidden Task : item PurchaseConfirmedAt 업데이트하는 작업을 넣어줘야 한다.
-            val newItem = item.copy(id = item.id, purchaseConfirmedAt = ZonedDateTime.now())
+            //val newItem = item.copy(id = item.id, purchaseConfirmedAt = ZonedDateTime.now())
             //OrderItem을 저장
-            orderItemRepository.save(newItem)
+            //orderItemRepository.save(newItem)
         }
     }
 }

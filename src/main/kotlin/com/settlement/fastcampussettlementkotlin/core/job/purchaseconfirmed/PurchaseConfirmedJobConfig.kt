@@ -9,7 +9,9 @@ import org.springframework.batch.core.configuration.annotation.JobScope
 import org.springframework.batch.core.job.builder.JobBuilder
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.core.step.builder.StepBuilder
+import org.springframework.batch.item.ItemWriter
 import org.springframework.batch.item.data.RepositoryItemReader
+import org.springframework.batch.item.database.JpaPagingItemReader
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
@@ -30,10 +32,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 @EnableBatchProcessing
 @EnableTransactionManagement // 추가 annotation 발생 :) !
 class PurchaseConfirmedJobConfig(
-        private val jobRepository: JobRepository,
-        private val transactionManager: PlatformTransactionManager,
-        @Qualifier("deliveryCompletedJpaItemReader") private val deliveryCompletedJpaItemReader: RepositoryItemReader<OrderItem>,
-        private val orderItemRepository: OrderItemRepository,
+    private val jobRepository: JobRepository,
+    private val transactionManager: PlatformTransactionManager,
+    @Qualifier("deliveryCompletedJpaItemReader") private val deliveryCompletedJpaItemReader: JpaPagingItemReader<List<OrderItem>>,
+    private val orderItemRepository: OrderItemRepository,
 ) {
 
     val JOB_NAME = "purchaseConfirmedJob"
@@ -50,7 +52,7 @@ class PurchaseConfirmedJobConfig(
     @JobScope
     fun purchaseConfirmedJobStep(): Step {
         return StepBuilder(JOB_NAME+"_step", jobRepository)
-                .chunk<OrderItem, OrderItem>(chunkSize, transactionManager)
+                .chunk<List<OrderItem>, List<OrderItem>>(chunkSize, transactionManager)
                 .reader(deliveryCompletedJpaItemReader)
                 .writer(purchaseConfirmedItemWriter())
                 .build()
