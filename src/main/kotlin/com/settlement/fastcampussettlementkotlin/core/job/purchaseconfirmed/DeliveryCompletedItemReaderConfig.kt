@@ -1,21 +1,15 @@
 package com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed
 
 import com.settlement.fastcampussettlementkotlin.domain.entity.order.OrderItem
-import jakarta.persistence.EntityManagerFactory
+import com.settlement.fastcampussettlementkotlin.infrastructure.database.repository.OrderItemRepository
 import org.springframework.batch.item.database.JpaPagingItemReader
+import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.transaction.PlatformTransactionManager
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
-
+import java.time.*
 
 @Configuration
-class DeliveryCompletedItemReaderConfig(
-    private val entityManagerFactory: EntityManagerFactory,
-    private val transactionManager: PlatformTransactionManager) {
+class DeliveryCompletedItemReaderConfig {
 
     val chunkSize = 500
     val startDateTime: ZonedDateTime = ZonedDateTime.of(
@@ -29,18 +23,14 @@ class DeliveryCompletedItemReaderConfig(
             ZoneId.of("Asia/Seoul"))
 
     @Bean
-    fun deliveryCompletedJpaItemReader(): JpaPagingItemReader<List<OrderItem>> {
-        println("StartTime:"+startDateTime+" / [endDateTime] :"+endDateTime)
-        val reader = JpaPagingItemReader<List<OrderItem>>()
-        reader.setEntityManagerFactory(entityManagerFactory)
-        reader.setQueryString("SELECT o FROM OrderItem o WHERE o.shippedCompleteAt BETWEEN :startDate AND :endDate")
-        reader.setParameterValues(
-            mapOf("startDate" to startDateTime, "endDate" to endDateTime)
-        )
-        reader.pageSize = chunkSize
-        reader.setTransacted(true) // Enable Spring's transaction management
-        reader.afterPropertiesSet()
+    fun deliveryCompletedJpaItemReader(orderItemRepository: OrderItemRepository): JpaPagingItemReader<OrderItem> {
 
-        return reader
+        val queryProvider = DeliveryCompletedJpaQueryProvider(this.startDateTime, this.endDateTime)
+
+        return JpaPagingItemReaderBuilder<OrderItem>()
+                .name("deliveryCompletedJpaItemReader")
+                .pageSize(this.chunkSize)
+                .queryProvider(queryProvider)
+                .build()
     }
 }

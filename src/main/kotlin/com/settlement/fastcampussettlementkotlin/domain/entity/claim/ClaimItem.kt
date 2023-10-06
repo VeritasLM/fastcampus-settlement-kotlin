@@ -1,10 +1,10 @@
-package com.settlement.fastcampussettlementkotlin.domain.entity.claim
+package com.settlement.fastcampussettlementkotlin.domain.entity.order
 
-import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import java.time.ZonedDateTime
+import jakarta.persistence.Column
 
 @Entity
 @Table(schema = "commerce", name = "order")

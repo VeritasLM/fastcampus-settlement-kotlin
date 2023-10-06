@@ -3,7 +3,6 @@ package com.settlement.fastcampussettlementkotlin.domain.enums
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
 
-
 @Converter
 class ClaimStatusConverter : AttributeConverter<ClaimStatus, Int> {
     override fun convertToDatabaseColumn(attribute: ClaimStatus?): Int {

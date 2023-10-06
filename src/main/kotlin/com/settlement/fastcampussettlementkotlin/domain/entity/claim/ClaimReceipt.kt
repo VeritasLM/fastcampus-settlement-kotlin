@@ -2,11 +2,12 @@ package com.settlement.fastcampussettlementkotlin.domain.entity.claim
 
 import com.settlement.fastcampussettlementkotlin.domain.enums.ClaimStatus
 import com.settlement.fastcampussettlementkotlin.domain.enums.ClaimStatusConverter
-import jakarta.persistence.Column
 import jakarta.persistence.Convert
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import java.time.ZonedDateTime
+
 
 @Entity
 data class ClaimReceipt(

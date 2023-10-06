@@ -8,7 +8,7 @@ import java.time.ZonedDateTime
 @Entity
 data class SettlementTotal(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="settlementTotalId", nullable = false)
+    @Column(name="settlement_total_id", nullable = false)
     val id: Long,
     @Column(nullable = false)
     val settlementDate: LocalDate,

@@ -1,7 +1,7 @@
-package com.settlement.fastcampussettlementkotlin.domain.entity.claim
+package com.settlement.fastcampus.domain.entity.claim
 
-import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.Column
 import jakarta.persistence.Id
 import java.math.BigDecimal
 import java.time.ZonedDateTime
