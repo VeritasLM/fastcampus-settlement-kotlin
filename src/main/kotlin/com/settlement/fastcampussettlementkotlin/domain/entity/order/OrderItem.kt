@@ -4,7 +4,6 @@ import jakarta.persistence.*
 import java.time.ZonedDateTime
 
 @Entity
-@Table(schema = "commerce", name = "order_item")
 data class OrderItem(
         @Id @Column(name = "order_item_no") val id: Long,
         val orderNo: Long, //주문번호
@@ -19,4 +18,8 @@ data class OrderItem(
 
         val purchaseConfirmedAt: ZonedDateTime? = null, //구매확정일
         val shippedCompleteAt: ZonedDateTime? = null, //배송완료일
+
+        @OneToOne
+        @JoinColumn(name = "order_item_snapshot_no", referencedColumnName = "id", insertable = false, updatable = false)
+        val orderItemSnapshot: OrderItemSnapshot,
 )

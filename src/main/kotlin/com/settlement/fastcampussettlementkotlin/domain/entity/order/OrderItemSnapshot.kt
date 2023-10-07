@@ -7,7 +7,6 @@ import java.math.BigDecimal
 import java.time.ZonedDateTime
 
 @Entity
-@Table(schema = "commerce", name = "Order_item_snapshot")
 data class OrderItemSnapshot(
         @Id @Column(name = "order_item_snapshot_no") val id: Long,
 
@@ -22,8 +21,17 @@ data class OrderItemSnapshot(
         val supplyPrice: BigDecimal? = BigDecimal.ZERO,
         val promotionAmount: BigDecimal? = BigDecimal.ZERO,
         val defaultDeliveryAmount: BigDecimal? = BigDecimal.valueOf(3000),
+        val mileageUsageAmount: BigDecimal? = BigDecimal.ZERO,
 
         val itemCategory: Int? = 0, //TODO : Enum으로 변경
         val taxRate: Int? = 3,
         val taxType: String = "TAX", //TODO : Enum으로 변경
+
+        @ManyToOne
+        @JoinColumn(name = "seller_no", referencedColumnName = "id", insertable = false, updatable = false)
+        val seller: Seller,
+
+        @ManyToOne
+        @JoinColumn(name = "product_no", referencedColumnName = "id", insertable = false, updatable = false)
+        val product: Product,
 )
