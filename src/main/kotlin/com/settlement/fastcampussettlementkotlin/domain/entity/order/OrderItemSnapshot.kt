@@ -2,7 +2,10 @@ package com.settlement.fastcampussettlementkotlin.domain.entity.order
 
 import com.settlement.fastcampussettlementkotlin.domain.entity.Product
 import com.settlement.fastcampussettlementkotlin.domain.entity.Seller
+import com.settlement.fastcampussettlementkotlin.domain.enums.TaxType
+import com.settlement.fastcampussettlementkotlin.domain.enums.TaxTypeConverter
 import jakarta.persistence.*
+import org.springframework.boot.context.properties.bind.DefaultValue
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -25,7 +28,9 @@ data class OrderItemSnapshot(
 
         val itemCategory: Int? = 0, //TODO : Enum으로 변경
         val taxRate: Int? = 3,
-        val taxType: String = "TAX", //TODO : Enum으로 변경
+
+        @Convert(converter = TaxTypeConverter::class)
+        val taxType: TaxType? = TaxType.TAX,
 
         @ManyToOne
         @JoinColumn(name = "seller_no", referencedColumnName = "id", insertable = false, updatable = false)

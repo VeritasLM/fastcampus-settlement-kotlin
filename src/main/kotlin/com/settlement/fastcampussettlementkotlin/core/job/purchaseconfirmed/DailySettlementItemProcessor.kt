@@ -1,5 +1,6 @@
 package com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed
 
+import com.settlement.fastcampussettlementkotlin.domain.collection.TaxCalculator
 import com.settlement.fastcampussettlementkotlin.domain.entity.order.OrderItem
 import com.settlement.fastcampussettlementkotlin.domain.entity.settlement.SettlementDaily
 import org.springframework.batch.item.ItemProcessor
@@ -17,7 +18,8 @@ class DailySettlementItemProcessor: ItemProcessor<OrderItem, SettlementDaily> {
         val count = item.orderCount
         val seller = orderItemSnapshot.seller
         //세금계산
-        val taxAmount = BigDecimal.ZERO
+        val taxCalculator = TaxCalculator(orderItemSnapshot)
+        val taxAmount = taxCalculator.getTaxAmount()
 
         //+ 정산금액에 필요한 데이터 만들기
         val pgSalesAmount = BigDecimal.ZERO
