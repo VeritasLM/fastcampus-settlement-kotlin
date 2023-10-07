@@ -1,5 +1,6 @@
 package com.settlement.fastcampussettlementkotlin.domain.entity.settlement
 
+import com.settlement.fastcampussettlementkotlin.domain.enums.TaxType
 import jakarta.persistence.*
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -25,7 +26,7 @@ data class SettlementDaily(
     @Column(nullable = false)
     val sellerName: String,
     val sellerBusinessNumber: Int?,
-    val taxType: String? = "TAX",
+    val taxType: TaxType? = "TAX",
     val sellType: String? = "CONSIGNMENT",
     @Column(nullable = false)
     val pgSalesAmount: BigDecimal? = BigDecimal.ZERO,
