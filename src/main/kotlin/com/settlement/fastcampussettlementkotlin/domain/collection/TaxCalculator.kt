@@ -24,16 +24,23 @@ class TaxCalculator(
         val taxTypeItem = getTaxTypeItem()
 
         return when(taxTypeItem) {
-            is TaxTypeItem.TaxItem -> calculateTaxForTaxItem(taxTypeItem)
-            is TaxTypeItem.TaxFreeItem -> taxTypeItem.price ?: BigDecimal.ZERO
+            is TaxTypeItem.TaxItem -> getCalculateTaxForTaxItem(taxTypeItem)
             is TaxTypeItem.ZeroTaxItem -> taxTypeItem.price ?: BigDecimal.ZERO
+            is TaxTypeItem.TaxFreeItem -> taxTypeItem.price ?: BigDecimal.ZERO
+            else -> BigDecimal.ZERO
         }
     }
 
-    private fun calculateTaxForTaxItem(taxItem: TaxTypeItem.TaxItem): BigDecimal {
+    private fun getCalculateTaxForTaxItem(taxItem: TaxTypeItem.TaxItem): BigDecimal {
         val price = taxItem.price ?: BigDecimal.ZERO
-        val rate = BigDecimal.valueOf(TAX_RATE)
+        val rate = BigDecimal.valueOf(TAX_RATE) // 0.03
+
+        //비즈니스 로직이 들어가는 예
+        if (orderItemSnapshot.itemCategory == 1) {
+            return price.multiply(BigDecimal.valueOf(0.20))
+        }
 
         return price.multiply(rate)
     }
+
 }
