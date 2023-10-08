@@ -26,7 +26,7 @@ data class SettlementDaily(
     @Column(nullable = false)
     val sellerName: String,
     val sellerBusinessNumber: Int?,
-    val taxType: TaxType? = "TAX",
+    val taxType: TaxType? = TaxType.TAX,
     val sellType: String? = "CONSIGNMENT",
     @Column(nullable = false)
     val pgSalesAmount: BigDecimal? = BigDecimal.ZERO,

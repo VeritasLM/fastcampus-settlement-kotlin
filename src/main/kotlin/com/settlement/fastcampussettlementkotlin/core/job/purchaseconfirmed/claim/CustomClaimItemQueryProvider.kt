@@ -1,6 +1,6 @@
 package com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.claim
 
-import com.settlement.fastcampussettlementkotlin.domain.entity.order.ClaimItem
+import com.settlement.fastcampussettlementkotlin.domain.entity.claim.ClaimItem
 import jakarta.persistence.Query
 import jakarta.persistence.TypedQuery
 import org.springframework.batch.item.database.orm.AbstractJpaQueryProvider

@@ -1,7 +1,6 @@
 package com.settlement.fastcampussettlementkotlin.domain.entity.claim
 
-import com.settlement.fastcampussettlementkotlin.domain.enums.ClaimStatus
-import com.settlement.fastcampussettlementkotlin.domain.enums.ClaimStatusConverter
+import com.settlement.fastcampussettlementkotlin.domain.enums.*
 import jakarta.persistence.Convert
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -19,10 +18,12 @@ data class ClaimReceipt(
     val deletedAt: ZonedDateTime? = null,
     val completedAt: ZonedDateTime? = null,
 
-    val requestType: String, //TODO ENUM으로
+    @Convert(converter = ClaimTypeConverter::class)
+    val requestType: ClaimType, //TODO ENUM으로
     @Convert(converter = ClaimStatusConverter::class)
     val claimStatus: ClaimStatus,
 
-    val extraFeePayer: Int, //TODO ENUM으로
+    @Convert(converter = ExtraFeePayerConverter::class)
+    val extraFeePayer: ExtraFeePayer, //TODO ENUM으로
     val claimReason: Int, //TODO ENUM으로
 )
