@@ -2,6 +2,7 @@ package com.settlement.fastcampussettlementkotlin.core.job.total
 
 import com.settlement.fastcampussettlementkotlin.domain.entity.settlement.SettlementTotal
 import com.settlement.fastcampussettlementkotlin.domain.projection.SummingSettlementResponse
+import com.settlement.fastcampussettlementkotlin.infrastructure.database.repository.SettlementTotalRepository
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobScope
@@ -21,6 +22,7 @@ class TotalSettlementJobConfig(
     private val jobRepository: JobRepository,
     private val transactionManager: PlatformTransactionManager,
     @Qualifier("totalSettlementJpaItemReader") private val totalSettlementJpaItemReader: JpaPagingItemReader<SummingSettlementResponse>,
+    private val settlementTotalRepository: SettlementTotalRepository,
 ) {
 
     private val JOB_NAME = "totalSettlementJob"
@@ -40,10 +42,13 @@ class TotalSettlementJobConfig(
             .chunk<SummingSettlementResponse, SettlementTotal>(this.chunkSize, this.transactionManager)
             .reader(totalSettlementJpaItemReader)
             .processor(totalSettlementItemProcessor())
+            .writer(totalSettlementItemWriter())
             .build()
     }
 
     @Bean
     fun totalSettlementItemProcessor() = TotalSettlementItemProcessor()
 
+    @Bean
+    fun totalSettlementItemWriter() = TotalSettlementItemWriter(settlementTotalRepository)
 }
