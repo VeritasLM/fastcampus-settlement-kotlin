@@ -1,9 +1,10 @@
 package com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed
 
+import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.claim.ClaimSettlementItemProcessor
 import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.daily.DailySettlementItemProcessor
 import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.daily.DailySettlementItemWriter
 import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.delivery.PurchaseConfirmedWriter
-import com.settlement.fastcampussettlementkotlin.domain.entity.order.ClaimItem
+import com.settlement.fastcampussettlementkotlin.domain.entity.claim.ClaimItem
 import com.settlement.fastcampussettlementkotlin.domain.entity.order.OrderItem
 import com.settlement.fastcampussettlementkotlin.domain.entity.settlement.SettlementDaily
 import com.settlement.fastcampussettlementkotlin.infrastructure.database.repository.OrderItemRepository
@@ -98,12 +99,14 @@ class PurchaseConfirmedJobConfig(
         return StepBuilder(JOB_NAME+"_claimSettlement_step", jobRepository)
             .chunk<ClaimItem, SettlementDaily>(chunkSize, transactionManager)
             .reader(claimSettlementJpaItemReader)
+            .processor(claimSettlementItemProcessor())
             .build()
     }
 
-
-
-
+    @Bean
+    fun claimSettlementItemProcessor(): ClaimSettlementItemProcessor {
+        return ClaimSettlementItemProcessor()
+    }
 
 
 }

@@ -1,10 +1,8 @@
-package com.settlement.fastcampussettlementkotlin.domain.entity.order
+package com.settlement.fastcampussettlementkotlin.domain.entity.claim
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import com.settlement.fastcampussettlementkotlin.domain.entity.order.OrderItem
+import jakarta.persistence.*
 import java.time.ZonedDateTime
-import jakarta.persistence.Column
 
 @Entity
 @Table(schema = "commerce", name = "order")
@@ -17,4 +15,13 @@ data class ClaimItem(
 
     val orderItemNo: Long,
     val claimCount: Int? = 1,
+
+    @OneToOne
+    @JoinColumn(name = "order_item_no", referencedColumnName = "id", insertable = false, updatable = false)
+    val orderItem: OrderItem,
+
+    @ManyToOne
+    @JoinColumn(name = "claim_receipt_no", referencedColumnName = "id", insertable = false, updatable = false)
+    val claimReceipt: ClaimReceipt,
 )
+
