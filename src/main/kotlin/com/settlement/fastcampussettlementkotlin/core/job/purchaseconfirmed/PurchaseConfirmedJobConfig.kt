@@ -1,6 +1,7 @@
 package com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed
 
 import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.claim.ClaimSettlementItemProcessor
+import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.claim.ClaimSettlementItemWriter
 import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.daily.DailySettlementItemProcessor
 import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.daily.DailySettlementItemWriter
 import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.delivery.PurchaseConfirmedWriter
@@ -100,6 +101,7 @@ class PurchaseConfirmedJobConfig(
             .chunk<ClaimItem, SettlementDaily>(chunkSize, transactionManager)
             .reader(claimSettlementJpaItemReader)
             .processor(claimSettlementItemProcessor())
+            .writer(claimSettlementItemWriter())
             .build()
     }
 
@@ -108,5 +110,12 @@ class PurchaseConfirmedJobConfig(
         return ClaimSettlementItemProcessor()
     }
 
+    @Bean
+    fun claimSettlementItemWriter(): ClaimSettlementItemWriter {
+        return ClaimSettlementItemWriter(settlementDailyRepository)
+    }
 
 }
+
+
+
