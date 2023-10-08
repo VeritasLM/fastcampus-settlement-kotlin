@@ -11,7 +11,10 @@ import java.time.ZonedDateTime
 
 @Entity
 data class OrderItemSnapshot(
-        @Id @Column(name = "order_item_snapshot_no") val id: Long,
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "order_item_snapshot_no")
+        val id: Long? = null,
 
         val createdAt: ZonedDateTime? = ZonedDateTime.now(),
         val updatedAt: ZonedDateTime? = ZonedDateTime.now(),
