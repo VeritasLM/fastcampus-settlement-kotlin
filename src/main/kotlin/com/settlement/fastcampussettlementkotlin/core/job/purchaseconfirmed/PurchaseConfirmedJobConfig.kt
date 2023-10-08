@@ -1,5 +1,9 @@
 package com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed
 
+import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.daily.DailySettlementItemProcessor
+import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.daily.DailySettlementItemWriter
+import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.delivery.PurchaseConfirmedWriter
+import com.settlement.fastcampussettlementkotlin.domain.entity.order.ClaimItem
 import com.settlement.fastcampussettlementkotlin.domain.entity.order.OrderItem
 import com.settlement.fastcampussettlementkotlin.domain.entity.settlement.SettlementDaily
 import com.settlement.fastcampussettlementkotlin.infrastructure.database.repository.OrderItemRepository
@@ -34,6 +38,7 @@ class PurchaseConfirmedJobConfig(
     private val transactionManager: PlatformTransactionManager,
     @Qualifier("deliveryCompletedJpaItemReader") private val deliveryCompletedJpaItemReader: JpaPagingItemReader<OrderItem>,
     @Qualifier("dailySettlementJpaItemReader") private val dailySettlementJpaItemReader: JpaPagingItemReader<OrderItem>,
+    @Qualifier("claimSettlementJpaItemReader") private val claimSettlementJpaItemReader: JpaPagingItemReader<ClaimItem>,
     private val orderItemRepository: OrderItemRepository,
     private val settlementDailyRepository: SettlementDailyRepository,
 ) {
@@ -46,6 +51,7 @@ class PurchaseConfirmedJobConfig(
         return JobBuilder(JOB_NAME, jobRepository)
                 .start(purchaseConfirmedJobStep())
                 .next(dailySettlementJobStep())
+                .next(claimSettlementJobStep())
                 .build()
     }
 
@@ -84,5 +90,20 @@ class PurchaseConfirmedJobConfig(
     fun dailySettlementItemWriter(): DailySettlementItemWriter {
         return DailySettlementItemWriter(settlementDailyRepository)
     }
+
+
+    @Bean
+    @JobScope
+    fun claimSettlementJobStep(): Step {
+        return StepBuilder(JOB_NAME+"_claimSettlement_step", jobRepository)
+            .chunk<ClaimItem, SettlementDaily>(chunkSize, transactionManager)
+            .reader(claimSettlementJpaItemReader)
+            .build()
+    }
+
+
+
+
+
 
 }

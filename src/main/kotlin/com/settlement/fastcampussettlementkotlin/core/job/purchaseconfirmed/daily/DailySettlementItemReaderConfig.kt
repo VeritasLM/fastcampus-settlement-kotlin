@@ -1,4 +1,4 @@
-package com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed
+package com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.daily
 
 import com.settlement.fastcampussettlementkotlin.domain.entity.order.OrderItem
 import jakarta.persistence.EntityManager
