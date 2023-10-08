@@ -14,4 +14,5 @@ data class SummingSettlementResponse(
     val sumShippingFeeAmount: BigDecimal,
     val sumClaimShippingFeeAmount: BigDecimal,
     val sumCommissionAmount: BigDecimal,
+    val sumTaxAmount: BigDecimal,
 )
