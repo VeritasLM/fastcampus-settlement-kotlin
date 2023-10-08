@@ -3,6 +3,7 @@ package com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed
 import com.settlement.fastcampussettlementkotlin.domain.entity.order.OrderItem
 import com.settlement.fastcampussettlementkotlin.domain.entity.settlement.SettlementDaily
 import com.settlement.fastcampussettlementkotlin.infrastructure.database.repository.OrderItemRepository
+import com.settlement.fastcampussettlementkotlin.infrastructure.database.repository.SettlementDailyRepository
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing
@@ -29,11 +30,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 @EnableBatchProcessing
 @EnableTransactionManagement // 추가 annotation 발생 :) !
 class PurchaseConfirmedJobConfig(
-        private val jobRepository: JobRepository,
-        private val transactionManager: PlatformTransactionManager,
-        @Qualifier("deliveryCompletedJpaItemReader") private val deliveryCompletedJpaItemReader: JpaPagingItemReader<OrderItem>,
-        @Qualifier("dailySettlementJpaItemReader") private val dailySettlementJpaItemReader: JpaPagingItemReader<OrderItem>,
-        private val orderItemRepository: OrderItemRepository,
+    private val jobRepository: JobRepository,
+    private val transactionManager: PlatformTransactionManager,
+    @Qualifier("deliveryCompletedJpaItemReader") private val deliveryCompletedJpaItemReader: JpaPagingItemReader<OrderItem>,
+    @Qualifier("dailySettlementJpaItemReader") private val dailySettlementJpaItemReader: JpaPagingItemReader<OrderItem>,
+    private val orderItemRepository: OrderItemRepository,
+    private val settlementDailyRepository: SettlementDailyRepository,
 ) {
 
     val JOB_NAME = "purchaseConfirmedJob"
@@ -69,12 +71,18 @@ class PurchaseConfirmedJobConfig(
             .chunk<OrderItem, SettlementDaily>(chunkSize, transactionManager)
             .reader(dailySettlementJpaItemReader)
             .processor(dailySettlementItemProcessor())
+            .writer(dailySettlementItemWriter())
             .build()
     }
 
     @Bean
     fun dailySettlementItemProcessor(): DailySettlementItemProcessor {
         return DailySettlementItemProcessor()
+    }
+
+    @Bean
+    fun dailySettlementItemWriter(): DailySettlementItemWriter {
+        return DailySettlementItemWriter(settlementDailyRepository)
     }
 
 }
