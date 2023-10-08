@@ -1,4 +1,4 @@
-package com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed
+package com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.delivery
 
 import com.settlement.fastcampussettlementkotlin.domain.entity.order.OrderItem
 import com.settlement.fastcampussettlementkotlin.infrastructure.database.repository.OrderItemRepository
