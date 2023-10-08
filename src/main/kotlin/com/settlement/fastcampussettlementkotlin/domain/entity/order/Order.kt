@@ -1,22 +1,22 @@
 package com.settlement.fastcampussettlementkotlin.domain.entity.order
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
 @Entity
 data class Order(
-        @Id @Column(name = "order_no") var id: Long,
-        var createdAt: ZonedDateTime? = ZonedDateTime.now(),
-        var updatedAt: ZonedDateTime? = ZonedDateTime.now(),
-        var deletedAt: ZonedDateTime? = null,
-        var paidConfirmedAt: ZonedDateTime? = null,
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "order_no") val id: Long? = null,
+        val createdAt: ZonedDateTime? = ZonedDateTime.now(),
+        val updatedAt: ZonedDateTime? = ZonedDateTime.now(),
+        val deletedAt: ZonedDateTime? = null,
+        val paidConfirmedAt: ZonedDateTime? = null,
 
-        var paidPgAmount: BigDecimal? = BigDecimal.ZERO,
-        var usedMileageAmount: BigDecimal? = BigDecimal.ZERO,
-        var couponDiscountAmount: BigDecimal? = BigDecimal.ZERO,
+        val paidPgAmount: BigDecimal? = BigDecimal.ZERO,
+        val usedMileageAmount: BigDecimal? = BigDecimal.ZERO,
+        val couponDiscountAmount: BigDecimal? = BigDecimal.ZERO,
 
         //주문자 정보는 x
 )

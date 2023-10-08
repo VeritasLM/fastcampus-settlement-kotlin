@@ -5,7 +5,9 @@ import java.time.ZonedDateTime
 
 @Entity
 data class OrderItem(
-        @Id @Column(name = "order_item_no") val id: Long,
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "order_item_no") val id: Long? = null,
         val orderNo: Long, //주문번호
         val orderItemSnapshotNo: Long, //주문 스냅샷 번호
 
