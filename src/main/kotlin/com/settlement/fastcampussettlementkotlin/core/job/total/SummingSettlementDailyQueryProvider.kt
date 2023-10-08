@@ -22,7 +22,8 @@ class SummingSettlementDailyQueryProvider(
                     "sum(sd.mileageUsageAmount) as sumMileageUsageAmount," +
                     "sum(sd.shippingFeeAmount) as sumShippingFeeAmount," +
                     "sum(sd.claimShippingFeeAmount) as sumClaimShippingFeeAmount," +
-                    "sum(sd.commissionAmount) as sumCommissionAmount " +
+                    "sum(sd.commissionAmount) as sumCommissionAmount, " +
+                    "sum(sd.taxAmount) as sumTaxAmount " +
                     "FROM SettlementDaily sd " +
                     "WHERE sd.settlementDate BETWEEN :startDate AND :endDate " +
                     "GROUP BY sellerNo",
