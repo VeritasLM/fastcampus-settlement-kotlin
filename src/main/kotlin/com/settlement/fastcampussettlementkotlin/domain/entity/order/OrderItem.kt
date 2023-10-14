@@ -9,6 +9,7 @@ data class OrderItem(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "order_item_no") val id: Long? = null,
         val orderNo: Long, //주문번호
+        @Column(name = "order_item_snapshot_no")
         val orderItemSnapshotNo: Long, //주문 스냅샷 번호
 
         val orderCount: Int? = 1, //주문수량
@@ -22,6 +23,6 @@ data class OrderItem(
         val shippedCompleteAt: ZonedDateTime? = null, //배송완료일
 
         @OneToOne
-        @JoinColumn(name = "order_item_snapshot_no", referencedColumnName = "id", insertable = false, updatable = false)
+        @JoinColumn(name = "order_item_snapshot_no", insertable = false, updatable = false)
         val orderItemSnapshot: OrderItemSnapshot,
 )

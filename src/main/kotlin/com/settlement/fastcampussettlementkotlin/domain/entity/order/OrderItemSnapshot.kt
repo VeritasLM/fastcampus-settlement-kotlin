@@ -20,7 +20,10 @@ data class OrderItemSnapshot(
         val updatedAt: ZonedDateTime? = ZonedDateTime.now(),
         val deletedAt: ZonedDateTime? = null,
 
+        @Column(name = "product_no")
         val productNo: Long,
+
+        @Column(name = "seller_no")
         val sellerNo: Long,
 
         val sellPrice: BigDecimal? = BigDecimal.ZERO,
@@ -36,10 +39,10 @@ data class OrderItemSnapshot(
         val taxType: TaxType? = TaxType.TAX,
 
         @ManyToOne
-        @JoinColumn(name = "seller_no", referencedColumnName = "id", insertable = false, updatable = false)
+        @JoinColumn(name = "seller_no", insertable = false, updatable = false)
         val seller: Seller,
 
         @ManyToOne
-        @JoinColumn(name = "product_no", referencedColumnName = "id", insertable = false, updatable = false)
+        @JoinColumn(name = "product_no", insertable = false, updatable = false)
         val product: Product,
 )

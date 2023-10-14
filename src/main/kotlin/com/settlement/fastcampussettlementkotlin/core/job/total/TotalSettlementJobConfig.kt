@@ -52,3 +52,13 @@ class TotalSettlementJobConfig(
     @Bean
     fun totalSettlementItemWriter() = TotalSettlementItemWriter(settlementTotalRepository)
 }
+
+
+
+
+
+
+
+
+
+
