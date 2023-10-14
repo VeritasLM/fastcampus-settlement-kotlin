@@ -2,6 +2,7 @@ package com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.del
 
 import com.settlement.fastcampussettlementkotlin.domain.entity.order.OrderItem
 import com.settlement.fastcampussettlementkotlin.infrastructure.database.repository.OrderItemRepository
+import jakarta.persistence.EntityManager
 import org.springframework.batch.item.database.JpaPagingItemReader
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder
 import org.springframework.context.annotation.Bean
@@ -9,7 +10,9 @@ import org.springframework.context.annotation.Configuration
 import java.time.*
 
 @Configuration
-class DeliveryCompletedItemReaderConfig {
+class DeliveryCompletedItemReaderConfig(
+    private val entityManager: EntityManager,
+) {
 
     val chunkSize = 500
     val startDateTime: ZonedDateTime = ZonedDateTime.of(
@@ -23,12 +26,13 @@ class DeliveryCompletedItemReaderConfig {
             ZoneId.of("Asia/Seoul"))
 
     @Bean
-    fun deliveryCompletedJpaItemReader(orderItemRepository: OrderItemRepository): JpaPagingItemReader<OrderItem> {
+    fun deliveryCompletedJpaItemReader(): JpaPagingItemReader<OrderItem> {
 
         val queryProvider = DeliveryCompletedJpaQueryProvider(this.startDateTime, this.endDateTime)
 
         return JpaPagingItemReaderBuilder<OrderItem>()
                 .name("deliveryCompletedJpaItemReader")
+                .entityManagerFactory(this.entityManager.entityManagerFactory) // EntityManagerFactory 주입
                 .pageSize(this.chunkSize)
                 .queryProvider(queryProvider)
                 .build()

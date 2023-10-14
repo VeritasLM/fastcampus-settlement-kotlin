@@ -6,7 +6,6 @@ import org.springframework.batch.item.Chunk
 import org.springframework.batch.item.ItemWriter
 import org.springframework.context.annotation.Configuration
 
-@Configuration
 class ClaimSettlementItemWriter(
     private val settlementDailyRepository: SettlementDailyRepository
 ): ItemWriter<SettlementDaily> {
