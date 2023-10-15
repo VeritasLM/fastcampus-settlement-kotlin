@@ -1,5 +1,6 @@
 package com.settlement.fastcampussettlementkotlin.domain.collection
 
+import com.settlement.fastcampussettlementkotlin.domain.command.PgSalesAmountMaterial
 import com.settlement.fastcampussettlementkotlin.domain.entity.order.OrderItem
 import com.settlement.fastcampussettlementkotlin.domain.entity.settlement.SettlementDaily
 import java.time.LocalDate
@@ -19,6 +20,11 @@ class PositiveDailySettlementCollection(
         val taxAmount = taxCalculator.getTaxAmount().multiply(countToDecimal)
 
         //+ 정산금액에 필요한 데이터 만들기
+        val pgSalesAmountMaterial = PgSalesAmountMaterial(
+            orderItemSnapshot.sellPrice,
+            orderItemSnapshot.promotionAmount,
+            orderItemSnapshot.mileageUsageAmount
+        )
         val pgCalculator = PgSalesAmountCalculator(orderItemSnapshot)
         val pgSalesAmount = pgCalculator.getPgSaleAmount().multiply(countToDecimal)
 
