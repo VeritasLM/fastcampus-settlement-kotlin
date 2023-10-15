@@ -5,7 +5,7 @@ import jakarta.persistence.*
 import java.time.ZonedDateTime
 
 @Entity
-@Table(schema = "commerce", name = "order")
+@Table(schema = "commerce", name = "claim_item")
 data class ClaimItem(
     @Id @Column(name = "claim_item_no") val id : Long,
     @Column(name = "claim_receipt_no")
