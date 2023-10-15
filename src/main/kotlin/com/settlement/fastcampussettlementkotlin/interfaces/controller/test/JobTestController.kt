@@ -1,4 +1,4 @@
-package com.settlement.fastcampussettlementkotlin.interfaces.controller
+package com.settlement.fastcampussettlementkotlin.interfaces.controller.test
 
 import com.settlement.fastcampussettlementkotlin.core.launcher.PurchaseConfirmedRunner
 import org.springframework.web.bind.annotation.GetMapping

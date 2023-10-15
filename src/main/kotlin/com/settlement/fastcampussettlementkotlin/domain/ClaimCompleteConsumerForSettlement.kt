@@ -12,7 +12,7 @@ class ClaimCompleteConsumerForSettlement(
     private val claimItemRepository: ClaimItemRepository,
     private val settlementDailyRepository: SettlementDailyRepository,
 ) {
-    @KafkaListener(topics = ["claimComplete"], groupId = "test-consumer-group")
+    @KafkaListener(topics = ["claimComplete"], groupId = "claim-consumer-group")
     fun listen(message: String) {
         try {
             // 메시지 처리 로직 추가
