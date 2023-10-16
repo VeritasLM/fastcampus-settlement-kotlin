@@ -39,6 +39,7 @@ dependencies {
 
     implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
     implementation("jakarta.annotation:jakarta.annotation-api")
+    implementation("net.gpedro.integrations.slack:slack-webhook:1.4.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.batch:spring-batch-test")

@@ -5,6 +5,7 @@ import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.clai
 import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.daily.DailySettlementItemProcessor
 import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.daily.DailySettlementItemWriter
 import com.settlement.fastcampussettlementkotlin.core.job.purchaseconfirmed.delivery.PurchaseConfirmedWriter
+import com.settlement.fastcampussettlementkotlin.core.listener.PurchaseConfirmedChunkListener
 import com.settlement.fastcampussettlementkotlin.domain.entity.claim.ClaimItem
 import com.settlement.fastcampussettlementkotlin.domain.entity.order.OrderItem
 import com.settlement.fastcampussettlementkotlin.domain.entity.settlement.SettlementDaily
@@ -64,6 +65,8 @@ class PurchaseConfirmedJobConfig(
                 .chunk<OrderItem, OrderItem>(chunkSize, transactionManager)
                 .reader(deliveryCompletedJpaItemReader)
                 .writer(purchaseConfirmedItemWriter())
+                .listener(PurchaseConfirmedChunkListener())
+                .allowStartIfComplete(true)
                 .build()
     }
 
@@ -80,6 +83,7 @@ class PurchaseConfirmedJobConfig(
             .reader(dailySettlementJpaItemReader)
             .processor(dailySettlementItemProcessor())
             .writer(dailySettlementItemWriter())
+            .allowStartIfComplete(true)
             .build()
     }
 
@@ -102,6 +106,7 @@ class PurchaseConfirmedJobConfig(
             .reader(claimSettlementJpaItemReader)
             .processor(claimSettlementItemProcessor())
             .writer(claimSettlementItemWriter())
+            .allowStartIfComplete(true)
             .build()
     }
 
