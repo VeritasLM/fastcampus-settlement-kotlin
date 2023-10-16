@@ -13,7 +13,10 @@ class PurchaseConfirmedWriter(
         private val orderItemRepository: OrderItemRepository
 ): ItemWriter<OrderItem> {
     override fun write(@NonNull chunk: Chunk<out OrderItem>) {
-        println(chunk.items)
+        if (true) {
+            throw Exception()
+        }
+
         for (item in chunk.items) {
             println(item)
             //TODO Hidden Task : item PurchaseConfirmedAt 업데이트하는 작업을 넣어줘야 한다.
