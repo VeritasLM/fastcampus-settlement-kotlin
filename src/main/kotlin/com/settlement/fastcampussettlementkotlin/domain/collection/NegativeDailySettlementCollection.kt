@@ -1,5 +1,6 @@
 package com.settlement.fastcampussettlementkotlin.domain.collection
 
+import com.settlement.fastcampussettlementkotlin.domain.command.PgSalesAmountMaterial
 import com.settlement.fastcampussettlementkotlin.domain.entity.claim.ClaimItem
 import com.settlement.fastcampussettlementkotlin.domain.entity.settlement.SettlementDaily
 import java.math.BigDecimal
@@ -22,7 +23,13 @@ class NegativeDailySettlementCollection(
         val taxAmount = taxCalculator.getTaxAmount().multiply(countToDecimal)
 
         //- 정산금액에 필요한 데이터 만들기
-        val pgCalculator = PgSalesAmountCalculator(orderItemSnapshot)
+        val pgSalesAmountMaterial = PgSalesAmountMaterial(
+            orderItemSnapshot.sellPrice,
+            orderItemSnapshot.promotionAmount,
+            orderItemSnapshot.mileageUsageAmount,
+        )
+
+        val pgCalculator = PgSalesAmountCalculator(pgSalesAmountMaterial)
         val pgSalesAmount = pgCalculator.getPgSaleAmount().multiply(countToDecimal)
 
         val commissionAmountCalculator = CommissionAmountCalculator(orderItemSnapshot)

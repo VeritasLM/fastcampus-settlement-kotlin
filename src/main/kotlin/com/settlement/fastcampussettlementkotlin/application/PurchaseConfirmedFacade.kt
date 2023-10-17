@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service
 
 @Service
 class PurchaseConfirmedFacade(
-    private val purchaseConfirmedService: PurchaseConfirmedService,
+    private val purchaseConfirmedService: PurchaseConfirmedService
 ) {
 
     fun orderComplete(orderNo: Long) {
-        purchaseConfirmedService
+        purchaseConfirmedService.complete(orderNo)
     }
 
 }

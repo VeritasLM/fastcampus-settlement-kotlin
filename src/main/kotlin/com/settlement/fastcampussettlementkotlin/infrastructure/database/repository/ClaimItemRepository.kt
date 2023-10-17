@@ -7,5 +7,7 @@ import java.time.LocalDateTime
 import java.time.ZonedDateTime
 
 interface ClaimItemRepository : JpaRepository<ClaimItem, Long> {
+
+    fun findByClaimReceiptNo(claimNo: Long): List<ClaimItem>
 }
 

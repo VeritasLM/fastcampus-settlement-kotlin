@@ -14,14 +14,6 @@ class PurchaseConfirmedService(
     private val claimReceiptRepository: ClaimReceiptRepository,
 ) {
     @Throws(Exception::class)
-    fun complete(orderNo: Long) {
-        val remainClaimCount = claimReceiptRepository.countByOrderNoAndCompletedAtIsNotNull(orderNo)
-
-        return if (remainClaimCount == 0) {
-            executor.confirmed(orderNo)
-        } else {
-            throw Exception("진행 중인 클레임이 있어서 거래를 종료할 수 없습니다.")
-        }
-    }
+    fun complete(orderNo: Long) = executor.confirmed(orderNo)
 
 }

@@ -1,5 +1,6 @@
 package com.settlement.fastcampussettlementkotlin.infrastructure.message
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.settlement.fastcampussettlementkotlin.domain.OrderPurchaseConfirmedExecutor
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service

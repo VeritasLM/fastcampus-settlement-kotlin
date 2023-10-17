@@ -3,6 +3,7 @@ package com.settlement.fastcampussettlementkotlin.domain.collection
 import com.settlement.fastcampussettlementkotlin.domain.command.PgSalesAmountMaterial
 import com.settlement.fastcampussettlementkotlin.domain.entity.order.OrderItem
 import com.settlement.fastcampussettlementkotlin.domain.entity.settlement.SettlementDaily
+import java.math.BigDecimal
 import java.time.LocalDate
 
 class PositiveDailySettlementCollection(
@@ -25,7 +26,7 @@ class PositiveDailySettlementCollection(
             orderItemSnapshot.promotionAmount,
             orderItemSnapshot.mileageUsageAmount
         )
-        val pgCalculator = PgSalesAmountCalculator(orderItemSnapshot)
+        val pgCalculator = PgSalesAmountCalculator(pgSalesAmountMaterial)
         val pgSalesAmount = pgCalculator.getPgSaleAmount().multiply(countToDecimal)
 
         val commissionAmountCalculator = CommissionAmountCalculator(orderItemSnapshot)

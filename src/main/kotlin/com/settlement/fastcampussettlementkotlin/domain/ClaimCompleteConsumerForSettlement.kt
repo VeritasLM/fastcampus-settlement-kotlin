@@ -1,8 +1,10 @@
 package com.settlement.fastcampussettlementkotlin.domain
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.settlement.fastcampussettlementkotlin.domain.collection.NegativeDailySettlementCollection
 import com.settlement.fastcampussettlementkotlin.infrastructure.database.repository.ClaimItemRepository
 import com.settlement.fastcampussettlementkotlin.infrastructure.database.repository.SettlementDailyRepository
+import com.settlement.fastcampussettlementkotlin.infrastructure.message.data.ClaimCompleteMessage
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Service
 
@@ -17,33 +19,37 @@ class ClaimCompleteConsumerForSettlement(
         try {
             // 메시지 처리 로직 추가
             processMessage(message)
-
-            // 처리 성공 시, 메시지 커밋 (Kafka에서 해당 메시지를 읽음 표시)
+            System.out.println("정산 컨슈머: $message")
 
         } catch (e: Exception) {
             // 에러 처리
             handleException(e)
-
-            // 처리 실패 시, 메시지 리밸런싱 또는 재시도 설정 (Kafka에서 다시 읽음 표시)
         }
     }
 
+    /**
+     * message : ClaimCompleteMessage 직렬화
+     *
+     * {"claimNo": 1, "status": "COMPLETE"}
+     */
     private fun processMessage(message: String) {
-        // 메시지 처리 로직을 이곳에 구현
-        val claimItem = claimItemRepository.findById(message.toLong())
 
-        claimItem.ifPresent {
-            System.out.println("Saving Settlement!")
-            val settlementDaily = NegativeDailySettlementCollection(it).getSettlementDaily()
-            System.out.println(settlementDaily)
-            settlementDailyRepository.save(settlementDaily)
+        //역직렬화
+        val mapper = ObjectMapper()
+        val deserializeMessage = mapper.readValue(message, ClaimCompleteMessage::class.java)
+
+        val claimNo = deserializeMessage.claimNo
+
+        val claimItemList = claimItemRepository.findByClaimReceiptNo(claimNo)
+
+        val settlementDailyList = claimItemList.map {
+            NegativeDailySettlementCollection(it).getSettlementDaily()
         }
 
+        settlementDailyRepository.saveAll(settlementDailyList)
     }
 
     private fun handleException(e: Exception) {
         // 예외 처리 로직을 이곳에 구현
-        println("Error occurred: ${e.message}")
-        // 예외 처리를 수행하고 필요한 조치를 취함 (예: 로깅, 경고, 재시도 등)
     }
 }

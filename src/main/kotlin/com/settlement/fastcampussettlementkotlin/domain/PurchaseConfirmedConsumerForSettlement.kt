@@ -14,35 +14,34 @@ class PurchaseConfirmedConsumerForSettlement(
     private val orderItemRepository: OrderItemRepository,
     private val settlementDailyRepository: SettlementDailyRepository,
 ) {
-    @KafkaListener(topics = ["claimComplete"], groupId = "order-consumer-group")
+    @KafkaListener(topics = ["purchaseConfirmed"], groupId = "order-complete-consumer-group")
     fun listen(message: String) {
         try {
             // 메시지 처리 로직 추가
             processMessage(message)
-            // 처리 성공 시, 메시지 커밋 (Kafka에서 해당 메시지를 읽음 표시)
 
         } catch (e: Exception) {
             // 에러 처리
             handleException(e)
-
-            // 처리 실패 시, 메시지 리밸런싱 또는 재시도 설정 (Kafka에서 다시 읽음 표시)
         }
     }
 
+    /**
+     * message -> orderNo
+     */
     private fun processMessage(message: String) {
-        // 메시지 처리 로직을 이곳에 구현
-        val orderItemList = orderItemRepository.findByOrderNo(message.toLong())
+        val claimNo = message.toLong()
+        //OrderNo를 가진 OrderItem을 검색 ( List로 반환 )
+        val orderItemList = orderItemRepository.findByOrderNo(claimNo)
 
-        orderItemList.forEach { it ->
-            System.out.println("Saving Settlement!")
-            val settlementDaily = PositiveDailySettlementCollection(it).getSettlementDaily()
-            settlementDailyRepository.save(settlementDaily)
+        val settlementDailyList = orderItemList.map{
+            PositiveDailySettlementCollection(it).getSettlementDaily()
         }
+
+        settlementDailyRepository.saveAll(settlementDailyList)
     }
 
     private fun handleException(e: Exception) {
         // 예외 처리 로직을 이곳에 구현
-        println("Error occurred: ${e.message}")
-        // 예외 처리를 수행하고 필요한 조치를 취함 (예: 로깅, 경고, 재시도 등)
     }
 }
